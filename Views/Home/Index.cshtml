@@ -1,0 +1,90 @@
+﻿@model IEnumerable<TestAzureApp.Models.TestData>
+
+@{
+    ViewData["Title"] = "Home";
+}
+
+<h1>Test Data Dashboard</h1>
+Web application was created for testing.
+<table>
+    <tr>
+        <th>Connected to Server</th>
+        <td>@ViewBag.MachineName</td>
+    </tr>
+        <tr>
+            <th>Azure Region</th>
+            <td>@ViewBag.Region</td>
+        </tr>
+    </table>
+
+<h2>Data Controls</h2>
+Insert , delete, and burst insert data into the SQL database.
+<div class="controls">
+    <form asp-action="InsertData" method="post">
+        <button type="submit">Insert Data</button>
+    </form>
+    <button id="startAutoInsert" type="button">Start Auto Insert</button>
+    <button id="stopAutoInsert" type="button" disabled>Stop Auto Insert</button>
+
+    <form asp-action="BurstInsert" method="post" style="display:inline;">
+        <input type="number" name="count" value="100" min="1" max="10000" style="width:80px;" />
+        <button type="submit">Burst Insert</button>
+    </form>
+    <form asp-action="DeleteAll" method="post">
+        <button type="submit">Delete All</button>
+    </form>
+</div>
+
+<h2>Data Table</h2>
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Message</th>
+            <th>Inserted At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        @await Html.PartialAsync("TableRows", Model)
+    </tbody>
+</table>
+
+<script>
+    let autoInsertInterval = null;
+
+    function refreshTable() {
+        fetch('@Url.Action("TableRows", "Home")')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('tableBody').innerHTML = html;
+            });
+    }
+
+    document.getElementById('startAutoInsert').addEventListener('click', function () {
+        if (autoInsertInterval) return;
+        autoInsertInterval = setInterval(function () {
+            fetch('@Url.Action("InsertDataApi", "Home")', {
+                method: 'POST',
+                headers: {
+                    'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                }
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      refreshTable();
+                  }
+              });
+        }, 3000);
+        this.disabled = true;
+        document.getElementById('stopAutoInsert').disabled = false;
+    });
+
+    document.getElementById('stopAutoInsert').addEventListener('click', function () {
+        clearInterval(autoInsertInterval);
+        autoInsertInterval = null;
+        this.disabled = true;
+        document.getElementById('startAutoInsert').disabled = false;
+        refreshTable();
+    });
+</script>
