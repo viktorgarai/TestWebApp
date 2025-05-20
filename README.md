@@ -1,21 +1,34 @@
-﻿Simple web app that interacts with an SQL database.
-The Web app can be used for various Azure Test scenarios.
-The Web app shows on which Azure region the web app is running, the Auto Insert button inserts a record into the database every 3 seconds for continuous testing and calculating the downtime/failover time.
-(Environment variable must be set in each web app with name 'Region')
+﻿# Simple Web App for Azure Test Scenarios
 
-Web App:
-![Screenshot 1](images/TestWebApp.jpg)
+This Web app interacts with an SQL database and is designed for various Azure test scenarios.
 
+## Features
 
-Tested with the following architectures:
-- Multi-region App Service app approaches for disaster recovery -   
+- **Region Awareness:** Displays the Azure region where the web app is running.
+- **Auto Insert:** The "Auto Insert" button adds a record to the database every 3 seconds, enabling continuous testing and downtime/failover calculation.
+
+> **Note:** Set the environment variable `Region` in each web app instance.
+
+## Screenshots
+
+![Web App Screenshot](images/TestWebApp.jpg)
+
+## Tested Architectures
+
+- **Multi-region App Service approaches for disaster recovery:**
   - Active/Active
   - Active/Passive
 
-![Screenshot 2](images/WebAppTopology.jpg)
+## Topology
 
-A Web Application most likely depends on other services such as Azure SQL Database, Azure Storage accounts, or other. 
-When designing a DR strategy for a Web app, each of these dependendent Azure services should be considered in the DR strategy.
+![Web App Topology](images/WebAppTopology.jpg)
 
-References:
-https://learn.microsoft.com/en-us/azure/architecture/web-apps/guides/multi-region-app-service/multi-region-app-service?tabs=paired-regions
+In this topology, the web app is deployed in two regions and uses Azure Front Door for traffic routing. Azure SQL Database is configured in both regions with geo-replication enabled, ensuring data is synchronized and allowing failover to the secondary region in case of a disaster.
+
+## DR Considerations
+
+A web application often depends on other services such as Azure SQL Database, Azure Storage accounts, or others. When designing a disaster recovery (DR) strategy, consider each dependent Azure service in your DR planning.
+
+## References
+
+- [Multi-region App Service Architecture Guide (Microsoft Docs)](https://learn.microsoft.com/en-us/azure/architecture/web-apps/guides/multi-region-app-service/multi-region-app-service?tabs=paired-regions)
