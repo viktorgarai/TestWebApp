@@ -1,5 +1,7 @@
 ﻿Simple web app that interacts with an SQL database.
-The web app can be used for various Azure Test scenarios.
+The Web app can be used for various Azure Test scenarios.
+The Web app shows on which Azure region the web app is running, the Auto Insert button inserts a record into the database every 3 seconds for continuous testing and calculating the downtime/failover time.
+(Environment variable must be set in each web app with name 'Region')
 
 Web App:
 ![Screenshot 1](images/TestWebApp.jpg)
