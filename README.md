@@ -7,6 +7,14 @@ This Web app interacts with an SQL database and is designed for various Azure te
 - **Region Awareness:** Displays the Azure region where the web app is running.
 - **Auto Insert:** The "Auto Insert" button adds a record to the database every 3 seconds, enabling continuous testing and downtime/failover calculation.
 
+## Create SQL database and a table below
+
+    CREATE TABLE TestData (
+        Id INT PRIMARY KEY IDENTITY,
+        Message NVARCHAR(MAX),
+        InsertedAt DATETIME
+    );
+
 > **Note:** Set the environment variable `Region` in each web app instance.
 
 ## Screenshots
