@@ -8,6 +8,8 @@ This Web app interacts with an SQL database and is designed for various Azure te
 - **Auto Insert:** The "Auto Insert" button adds a record to the database every 3 seconds, enabling continuous testing and downtime/failover calculation.
 
 > **Note:** Set the environment variable `Region` in each web app instance.
+>
+> **Note:** To run this app on IIS on Windows server publish the app to folder, place in C:\inetpub\wwwroot and install ASP.NET Core Runtime 9.0.5 hosting bundle https://dotnet.microsoft.com/en-us/download/dotnet/9.0
 
 ## Create SQL database and a table below
 
